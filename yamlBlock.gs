@@ -127,6 +127,7 @@ function rowToObject(row, index) {
     subModel: row[index.subModelIndex],
     size: row[index.sizeIndex],
     other: row[index.otherIndex],
+    terminologyNames: row[index.terminologyNamesIndex],
   }
 }
 
@@ -155,7 +156,8 @@ function groupByShopeeShop() {
   const subModelIndex = header.indexOf('サブモデル辞書');
   const sizeIndex = header.indexOf('size');
   const otherIndex = header.indexOf('その他辞書');
-  const index = {shopeeShopIndex, collectionNameIndex, shopeeCategoryIdIndex, refCategoryNameIndex, attributeIdIndex, attributeValueIndex, commissionIndex, intlShippingFeeIndex, mercariCategoryIdIndex, mercariBrandIdIndex, mercariKeywordIndex, mercariPriceGeIndex, mercariPriceLeIndex, maxItemsIndex, brandIndex, productsIndex, productDefaultNameIndex, modelIndex, subModelIndex, sizeIndex, otherIndex}
+  const terminologyNamesIndex = header.indexOf('terminology_names');
+  const index = {shopeeShopIndex, collectionNameIndex, shopeeCategoryIdIndex, refCategoryNameIndex, attributeIdIndex, attributeValueIndex, commissionIndex, intlShippingFeeIndex, mercariCategoryIdIndex, mercariBrandIdIndex, mercariKeywordIndex, mercariPriceGeIndex, mercariPriceLeIndex, maxItemsIndex, brandIndex, productsIndex, productDefaultNameIndex, modelIndex, subModelIndex, sizeIndex, otherIndex, terminologyNamesIndex}
   let shopeeShops = {}
   data.forEach((row) => {
     if (shopeeShops[row[shopeeShopIndex]]) {
