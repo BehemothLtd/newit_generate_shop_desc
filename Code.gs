@@ -14,7 +14,7 @@ function onOpen() {
 function createFile(content = '') {
   const d = new Date();
   const year = d.getFullYear();
-  const month = ("0" + (d.getMonth() + 1)).slice(-2); 
+  const month = ("0" + (d.getMonth() + 1)).slice(-2);
   const date = ("0" + d.getDate()).slice(-2);
   const hours = ("0" + d.getUTCHours()).slice(-2);
   const minutes = ("0" + d.getUTCMinutes()).slice(-2);
@@ -91,7 +91,7 @@ function generateShopDesc() {
       `- &${code.replace('.', '_')}_description_before_original_text |\n\n  其他品牌也可以前往分店【mercari蝦皮市集_名牌精品包2】逛逛(^_<)\n  https://shopee.tw/mercaristore04.tw\n\n  以下是日文原文。`
     ]
     rowData['shopee_api'] = { baseUri: '<replace_me>', partner_id: '<replace_me>', shopid: '<replace_me>', key: '<replace_me>' }
-    
+
     rowData['shopee'] = {
       logistics: {
         '- logistic_id': shopOption.shopee_logistic_id,
@@ -107,7 +107,7 @@ function generateShopDesc() {
     rowData['# discount_price_update_enabled'] = shopOption.discount_price_update_enabled;
 
     rowData['pricing_rule'] = {}
-    Object.keys(pricingRuleOption).forEach(function(key) {
+    Object.keys(pricingRuleOption).forEach(function (key) {
       if (pricingRuleOption[key]) {
         rowData['pricing_rule'][key] = pricingRuleOption[key]
       }
@@ -119,26 +119,31 @@ function generateShopDesc() {
     }
 
     rowData['criteria'] = {}
-    Object.keys(criteriaOption).forEach(function(key) {
+    Object.keys(criteriaOption).forEach(function (key) {
       if (criteriaOption[key]) {
         rowData['criteria'][key] = criteriaOption[key]
       }
     });
 
-    
+
     rowData['collections'] = [];
-    shop.forEach(function(data) {
+    shop.forEach(function (data) {
       const nameComponents = [
-        { "- name": 'constant', options: { value: `*${code.replace('.', '_')}_name_prefix`} },
+        { "- name": 'constant', options: { value: `*${code.replace('.', '_')}_name_prefix` } },
         { "- name": 'constant', options: { value: data.brand } },
       ]
       if (data.products && data.products !== '') {
-        nameComponents.push({"- name": "pattern-matching", options: { dictionary: `pattern-matching-dictionary/${data.products}.tsv`, default: data.productDefaultName }})
+        nameComponents.push({ "- name": "pattern-matching", options: { dictionary: `pattern-matching-dictionary/${data.products}.tsv`, default: data.productDefaultName } })
       }
-      const patterns = new Array(data.model, data.subModel, data.size, data.other);
+      const patterns = new Array(data.model, data.mandatory, data.subModel, data.size, data.other);
       patterns.forEach((name) => {
         if (name && name !== "") {
-          nameComponents.push({"- name": "pattern-matching", options: { dictionary: `pattern-matching-dictionary/${name}.tsv` }})
+          const options = { dictionary: `pattern-matching-dictionary/${name}.tsv` }
+          if (name === data.mandatory) {
+            options['mandatory'] = true;
+          }
+
+          nameComponents.push({ "- name": "pattern-matching", options })
         }
       });
 
@@ -226,11 +231,11 @@ function generateShopDesc() {
 
     // })
   });
-  createFile(content); 
+  createFile(content);
 }
 
-function getTerminologyNames(terminologyNames){
-  if(!terminologyNames) return [];
+function getTerminologyNames(terminologyNames) {
+  if (!terminologyNames) return [];
 
   let currentDate = new Date().toLocaleDateString('en-ZA').replace(/\//g, "");
   return [`- ${terminologyNames}-${currentDate}`]

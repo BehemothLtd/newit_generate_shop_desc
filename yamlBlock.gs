@@ -9,12 +9,12 @@ function splitPriceCollection() {
   const shopeeShopIndex = header.indexOf('Shopee_shop');
   let splitPrices = {}
   dataSplitPrice.forEach((row) => {
-    const object = {collection_name: row[collection_name_index], mercari_price_ge: row[mercari_price_ge_index], mercari_price_le: row[mercari_price_le_index], max_items: row[max_items_index]}
+    const object = { collection_name: row[collection_name_index], mercari_price_ge: row[mercari_price_ge_index], mercari_price_le: row[mercari_price_le_index], max_items: row[max_items_index] }
     if (!splitPrices[row[shopeeShopIndex]]) {
       splitPrices[row[shopeeShopIndex]] = {}
     }
     const collectionNameSplit = row[collection_name_index].split(" - ");
-    const collectionOriginName = collectionNameSplit.slice(0, collectionNameSplit.length -1).join("");
+    const collectionOriginName = collectionNameSplit.slice(0, collectionNameSplit.length - 1).join("");
     if (splitPrices[row[shopeeShopIndex]][collectionOriginName]) {
       splitPrices[row[shopeeShopIndex]][collectionOriginName].push(object)
     } else {
@@ -30,17 +30,17 @@ function getShopOptions() {
   const header = currentData.splice(0, 1)[0];
 
   const shop_code_index = header.indexOf('Shopee_shop'),
-      item_sync_enabled_index = header.indexOf('item_sync_enabled'),
-      regular_price_update_enabled_index = header.indexOf('regular_price_update_enabled'),
-      discount_price_update_enabled_index =  header.indexOf('discount_price_update_enabled'),
-      discount_id_index = header.indexOf('discount_id'),
-      discount_multiplier_index = header.indexOf('discount_multiplier'),
-      shopee_logistic_id_index = header.indexOf('shopee_logistic_id'),
-      shopee_logistic_enabled_index = header.indexOf('shopee_logistic_enabled'),
-      shopee_logistic_is_free_index = header.indexOf('shopee_logistic_is_free'),
-      shopee_weight_index = header.indexOf('shopee_weight'),
-      shopee_days_to_ship_index = header.indexOf('shopee_days_to_ship'),
-      shopee_status_index = header.indexOf('shopee_status')
+    item_sync_enabled_index = header.indexOf('item_sync_enabled'),
+    regular_price_update_enabled_index = header.indexOf('regular_price_update_enabled'),
+    discount_price_update_enabled_index = header.indexOf('discount_price_update_enabled'),
+    discount_id_index = header.indexOf('discount_id'),
+    discount_multiplier_index = header.indexOf('discount_multiplier'),
+    shopee_logistic_id_index = header.indexOf('shopee_logistic_id'),
+    shopee_logistic_enabled_index = header.indexOf('shopee_logistic_enabled'),
+    shopee_logistic_is_free_index = header.indexOf('shopee_logistic_is_free'),
+    shopee_weight_index = header.indexOf('shopee_weight'),
+    shopee_days_to_ship_index = header.indexOf('shopee_days_to_ship'),
+    shopee_status_index = header.indexOf('shopee_status')
 
   let options = {}
   currentData.forEach((row) => {
@@ -128,6 +128,7 @@ function rowToObject(row, index) {
     size: row[index.sizeIndex],
     other: row[index.otherIndex],
     terminologyNames: row[index.terminologyNamesIndex],
+    mandatory: row[index.mandatoryIndex],
   }
 }
 
@@ -157,7 +158,8 @@ function groupByShopeeShop() {
   const sizeIndex = header.indexOf('size');
   const otherIndex = header.indexOf('その他辞書');
   const terminologyNamesIndex = header.indexOf('terminology_names');
-  const index = {shopeeShopIndex, collectionNameIndex, shopeeCategoryIdIndex, refCategoryNameIndex, attributeIdIndex, attributeValueIndex, commissionIndex, intlShippingFeeIndex, mercariCategoryIdIndex, mercariBrandIdIndex, mercariKeywordIndex, mercariPriceGeIndex, mercariPriceLeIndex, maxItemsIndex, brandIndex, productsIndex, productDefaultNameIndex, modelIndex, subModelIndex, sizeIndex, otherIndex, terminologyNamesIndex}
+  const mandatoryIndex = header.indexOf('キャラクター辞書（mandatory）');
+  const index = { shopeeShopIndex, collectionNameIndex, shopeeCategoryIdIndex, refCategoryNameIndex, attributeIdIndex, attributeValueIndex, commissionIndex, intlShippingFeeIndex, mercariCategoryIdIndex, mercariBrandIdIndex, mercariKeywordIndex, mercariPriceGeIndex, mercariPriceLeIndex, maxItemsIndex, brandIndex, productsIndex, productDefaultNameIndex, modelIndex, subModelIndex, sizeIndex, otherIndex, terminologyNamesIndex, mandatoryIndex }
   let shopeeShops = {}
   data.forEach((row) => {
     if (shopeeShops[row[shopeeShopIndex]]) {
