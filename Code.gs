@@ -178,7 +178,7 @@ function generateShopDesc() {
             name_components: nameComponents,
             description_components: [
               { "- name": "constant", options: { value: `*${code.replace('.', '_')}_description_preamble` } },
-              { "- name": "language-translation", options: { source_language: "ja", target_language: "zh-tw", terminology_names: ["- mercaristore01_LOUIS_VUITTON_handbags-20200528"] } },
+              { "- name": "language-translation", options: { source_language: "ja", target_language: "zh-tw", terminology_names: getTerminologyNames(data.terminologyNames) } },
               { "- name": "constant", options: { value: `*${code.replace('.', '_')}_description_before_original_text` } },
               { "- name": "identity" },
             ],
@@ -208,7 +208,7 @@ function generateShopDesc() {
           name_components: nameComponents,
           description_components: [
             { "- name": "constant", options: { value: `*${code.replace('.', '_')}_description_preamble` } },
-            { "- name": "language-translation", options: { source_language: "ja", target_language: "zh-tw", terminology_names: ["- mercaristore01_LOUIS_VUITTON_handbags-20200528"] } },
+            { "- name": "language-translation", options: { source_language: "ja", target_language: "zh-tw", terminology_names: getTerminologyNames(data.terminologyNames) } },
             { "- name": "constant", options: { value: `*${code.replace('.', '_')}_description_before_original_text` } },
             { "- name": "identity" },
           ],
@@ -227,4 +227,11 @@ function generateShopDesc() {
     // })
   });
   createFile(content); 
+}
+
+function getTerminologyNames(terminologyNames){
+  if(!terminologyNames) return [];
+
+  let currentDate = new Date().toLocaleDateString('en-ZA').replace(/\//g, "");
+  return [`- ${terminologyNames}-${currentDate}`]
 }
