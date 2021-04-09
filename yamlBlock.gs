@@ -151,12 +151,12 @@ function groupByShopeeShop() {
   const mercariPriceLeIndex = header.indexOf('mercari_price_le');
   const maxItemsIndex = header.indexOf('max_items');
   const brandIndex = header.indexOf('ブランド名');
-  const productsIndex = header.indexOf('商品名辞書');
+  const productsIndex = header.indexOf('商品名辞書 (optional)');
   const productDefaultNameIndex = header.indexOf('商品名デフォルト');
-  const modelIndex = header.indexOf('モデル辞書');
-  const subModelIndex = header.indexOf('サブモデル辞書');
-  const sizeIndex = header.indexOf('size');
-  const otherIndex = header.indexOf('その他辞書');
+  const modelIndex = header.indexOf('モデル辞書 (optional)');
+  const subModelIndex = header.indexOf('サブモデル辞書 (optional)');
+  const sizeIndex = header.indexOf('size(optional)');
+  const otherIndex = header.indexOf('その他辞書 (optional)');
   const terminologyNamesIndex = header.indexOf('terminology_names');
   const mandatoryIndex = header.indexOf('キャラクター辞書（mandatory）');
   const index = { shopeeShopIndex, collectionNameIndex, shopeeCategoryIdIndex, refCategoryNameIndex, attributeIdIndex, attributeValueIndex, commissionIndex, intlShippingFeeIndex, mercariCategoryIdIndex, mercariBrandIdIndex, mercariKeywordIndex, mercariPriceGeIndex, mercariPriceLeIndex, maxItemsIndex, brandIndex, productsIndex, productDefaultNameIndex, modelIndex, subModelIndex, sizeIndex, otherIndex, terminologyNamesIndex, mandatoryIndex }

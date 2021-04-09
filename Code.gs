@@ -135,17 +135,18 @@ function generateShopDesc() {
       if (data.products && data.products !== '') {
         nameComponents.push({ "- name": "pattern-matching", options: { dictionary: `pattern-matching-dictionary/${data.products}.tsv`, default: data.productDefaultName } })
       }
-      const patterns = new Array(data.model, data.mandatory, data.subModel, data.size, data.other);
-      patterns.forEach((name) => {
-        if (name && name !== "") {
-          const options = { dictionary: `pattern-matching-dictionary/${name}.tsv` }
-          if (name === data.mandatory) {
+
+      const patterns = { model: data.model, mandatory: data.mandatory, subModel: data.subModel, size: data.size, other: data.other };
+      Object.keys(patterns).forEach(key => {
+        if (patterns[key] && patterns[key] !== "") {
+          const options = { dictionary: `pattern-matching-dictionary/${patterns[key]}.tsv` }
+          if (key === "mandatory") {
             options['mandatory'] = true;
           }
 
           nameComponents.push({ "- name": "pattern-matching", options })
         }
-      });
+      })
 
       nameComponents.push({ "- name": 'ab-test-id-ends-with-even', options: { value: "mercari" } });
 
