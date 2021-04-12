@@ -72,6 +72,7 @@ function generateShopDesc() {
   const shopeeShops = groupByShopeeShop();
   const splitPrice = splitPriceCollection();
   const shopOptions = getShopOptions();
+  const terminologyNames = getTerminologyNameMapping();
   const criterias = getCriteria();
   const pricingRules = getPricingRule();
   content = '';
@@ -135,6 +136,17 @@ function generateShopDesc() {
       if (data.products && data.products !== '') {
         nameComponents.push({ "- name": "pattern-matching", options: { dictionary: `pattern-matching-dictionary/${data.products}.tsv`, default: data.productDefaultName } })
       }
+      // const patterns = new Array(data.model, data.mandatory, data.subModel, data.size, data.other);
+      // patterns.forEach((name) => {
+      //   if (name && name !== "") {
+      //     const options = { dictionary: `pattern-matching-dictionary/${name}.tsv` }
+      //     if (name === data.mandatory) {
+      //       options['mandatory'] = true;
+      //     }
+
+      //     nameComponents.push({ "- name": "pattern-matching", options })
+      //   }
+      // });
 
       const patterns = { model: data.model, mandatory: data.mandatory, subModel: data.subModel, size: data.size, other: data.other };
       Object.keys(patterns).forEach(key => {
@@ -184,7 +196,7 @@ function generateShopDesc() {
             name_components: nameComponents,
             description_components: [
               { "- name": "constant", options: { value: `*${code.replace('.', '_')}_description_preamble` } },
-              { "- name": "language-translation", options: { source_language: "ja", target_language: "zh-tw", terminology_names: getTerminologyNames(data.terminologyNames) } },
+              { "- name": "language-translation", options: { source_language: "ja", target_language: "zh-tw", terminology_names: getTerminologyNames(data.terminologyNames, terminologyNames) } },
               { "- name": "constant", options: { value: `*${code.replace('.', '_')}_description_before_original_text` } },
               { "- name": "identity" },
             ],
@@ -214,7 +226,7 @@ function generateShopDesc() {
           name_components: nameComponents,
           description_components: [
             { "- name": "constant", options: { value: `*${code.replace('.', '_')}_description_preamble` } },
-            { "- name": "language-translation", options: { source_language: "ja", target_language: "zh-tw", terminology_names: getTerminologyNames(data.terminologyNames) } },
+            { "- name": "language-translation", options: { source_language: "ja", target_language: "zh-tw", terminology_names: getTerminologyNames(data.terminologyNames, terminologyNames) } },
             { "- name": "constant", options: { value: `*${code.replace('.', '_')}_description_before_original_text` } },
             { "- name": "identity" },
           ],
@@ -235,9 +247,10 @@ function generateShopDesc() {
   createFile(content);
 }
 
-function getTerminologyNames(terminologyNames) {
-  if (!terminologyNames) return [];
+function getTerminologyNames(sheetTN, terminologyNames) {
+  if (!sheetTN || !terminologyNames) return [];
 
-  let currentDate = new Date().toLocaleDateString('en-ZA').replace(/\//g, "");
-  return [`- ${terminologyNames}-${currentDate}`]
+  const tNameObj = terminologyNames.find(item => item.sheetFileName === sheetTN)
+  if (!tNameObj) return [];
+  return [`- ${tNameObj.awsFileName}`]
 }

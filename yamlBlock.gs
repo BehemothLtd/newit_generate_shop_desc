@@ -62,6 +62,22 @@ function getShopOptions() {
   return options;
 }
 
+function getTerminologyNameMapping() {
+  // return [{key: "test", value: "value test"}]
+  const currentSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('terminology names');
+  const currentData = currentSheet.getDataRange().getValues();
+  const header = currentData.splice(0, 1)[0];
+
+  const fileNameIndex = header.indexOf('File name'),
+    awsFileNameIndex = header.indexOf('AWS file mapping');
+
+  let result = [] // [ {sheetFileName: fileNameIndex, awsFileName: awsFileNameIndex}]
+  currentData.forEach((row) => {
+    result.push({ sheetFileName: row[fileNameIndex], awsFileName: row[awsFileNameIndex] })
+  });
+  return result;
+}
+
 function getCriteria() {
   const currentSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('criteria');
   const currentData = currentSheet.getDataRange().getValues();
